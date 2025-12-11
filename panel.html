@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaming Tools Panel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* SAME CSS (NO CHANGES) */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#000;color:#fff;min-height:100vh;overflow:hidden;}
+
+#matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:-2;background:black;}
+
+.rain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:-1;}
+.drop{position:absolute;width:2px;height:30px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(200,200,255,0.3));filter:blur(0.7px);animation:fall linear infinite;border-radius:2px;}
+@keyframes fall{0%{transform:translateY(-40px);}100%{transform:translateY(110vh);}}
+
+/* MAIN PANEL */
+#panel-section{position:fixed;top:0;left:0;width:100%;height:100vh;opacity:1;transition:1s ease;text-align:center;padding:40px 20px;z-index:5;}
+
+.header{font-size:38px;color:#00ff8f;font-weight:900;text-shadow:0 0 10px #00ff8f,0 0 20px #00ff8f,0 0 30px #00ff8f;}
+
+.panel-container{display:flex;justify-content:center;flex-wrap:wrap;}
+
+.tool-box{width:350px;height:220px;background:rgba(255,255,255,0.05);border-radius:18px;border:2px solid #00ff8f;padding:20px;margin-top:40px;cursor:pointer;transition:0.3s;}
+.tool-box:hover{transform:scale(1.05);box-shadow:0 0 20px #00ffbf,0 0 40px #00ffbf inset;}
+
+.tool-title{font-size:26px;color:#00ffae;margin-bottom:20px;font-weight:900;text-shadow:0 0 10px #00ffae;}
+
+.open-btn{padding:14px 25px;background:#00ff9e;color:#000;border-radius:10px;cursor:pointer;font-weight:900;transition:0.3s;}
+.open-btn:hover{transform:scale(1.08);box-shadow:0 0 15px #00ffbf,0 0 30px #00ffbf inset;}
+
+#overlayPanel{position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);display:none;justify-content:center;align-items:center;flex-direction:column;z-index:200;}
+
+#closeOverlayBtn{position:absolute;top:25px;right:35px;font-size:34px;font-weight:900;color:#00ffbf;cursor:pointer;text-shadow:0 0 10px #00ffbf;}
+
+.overlay-box{width:300px;padding:25px;background:rgba(255,255,255,0.08);border:2px solid #00ffbf;border-radius:15px;margin:15px;text-align:center;cursor:pointer;transition:0.3s;}
+.overlay-box h2{font-size:28px;color:#00ffbf;font-weight:900;}
+
+canvas{position:fixed;top:0;left:0;z-index:-2;width:100%;height:100vh;background:black;}
+</style>
+</head>
+
+<body>
+
+<!-- MATRIX -->
+<canvas id="matrixCanvas"></canvas>
+
+<!-- RAIN -->
+<div class="rain"></div>
+
+<!-- PANEL -->
+<div id="panel-section">
+<div class="header">GAMING TOOLS PANEL</div>
+<div class="panel-container">
+
+<div class="tool-box" onclick="openGlitchPanel()">
+<div class="tool-title">FREEFIRE GLITCH FILE</div>
+<button class="open-btn">OPEN</button>
+</div>
+
+</div>
+</div>
+
+<!-- OVERLAY -->
+<div id="overlayPanel">
+<div id="closeOverlayBtn" onclick="closeOverlay()">✖</div>
+
+<div class="overlay-box" onclick="openAppLink()"><h2>APP LINK</h2></div>
+<div class="overlay-box" onclick="openPasswordLink()"><h2>PASSWORD</h2></div>
+
+</div>
+
+<script>
+/* MATRIX */
+const canvas=document.getElementById("matrixCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;canvas.height=innerHeight;
+const letters="アカサタナハマヤラワABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const fontSize=18;const columns=canvas.width/fontSize;const drops=[];
+for(let x=0;x<columns;x++){drops[x]=1;}
+
+function drawMatrix(){
+ctx.fillStyle="rgba(0,0,0,0.1)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="#0F0";
+ctx.font=fontSize+"px monospace";
+for(let i=0;i<drops.length;i++){
+let text=letters.charAt(Math.floor(Math.random()*letters.length));
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+if(drops[i]*fontSize>canvas.height&&Math.random()>0.975){drops[i]=0;}
+drops[i]++;
+}
+requestAnimationFrame(drawMatrix);
+}
+drawMatrix();
+
+/* RAIN */
+function createRain(){
+const rain=document.querySelector('.rain');
+for(let i=0;i<120;i++){
+let drop=document.createElement('span');
+drop.classList.add('drop');
+drop.style.left=Math.random()*100+"%";
+drop.style.height=20+Math.random()*40+"px";
+drop.style.width=2+Math.random()*2+"px";
+drop.style.animationDuration=(0.7+Math.random()*1.2)+"s";
+drop.style.animationDelay=Math.random()*3+"s";
+rain.appendChild(drop);
+}
+}
+createRain();
+
+/* PANEL FUNCTIONS */
+function openGlitchPanel(){document.getElementById("overlayPanel").style.display="flex";}
+function closeOverlay(){document.getElementById("overlayPanel").style.display="none";}
+
+function openAppLink(){window.open("https://www.mediafire.com/file/pojdopuwthhig0s/AG+TOOL+V98.apk/file","_blank");}
+function openPasswordLink(){window.open("https://i.ibb.co/6JFWqfD3/Picsart-25-12-11-13-51-04-301.jpg","_blank");}
+
+</script>
+
+</body>
+</html>

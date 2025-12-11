@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* SAME CSS (NO CHANGES) */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#000;color:#fff;min-height:100vh;overflow:hidden;}
+
+#matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:-2;background:black;}
+
+.rain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:-1;}
+.drop{position:absolute;width:2px;height:30px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(200,200,255,0.3));filter:blur(0.7px);animation:fall linear infinite;border-radius:2px;}
+@keyframes fall{0%{transform:translateY(-40px);}100%{transform:translateY(110vh);}}
+
+/* LOADING */
+#loadingScreen{position:fixed;top:0;left:0;width:100%;height:100vh;background:black;display:flex;justify-content:center;align-items:center;z-index:500;flex-direction:column;}
+.loader{border:8px solid #444;border-top:8px solid #00ffbf;width:80px;height:80px;border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.loading-text{margin-top:20px;font-size:22px;letter-spacing:2px;color:#00ffd2;text-shadow:0 0 8px #00ffd2;font-weight:800;}
+
+#auth-section{height:100vh;display:flex;justify-content:center;align-items:center;transition:1s ease;opacity:0;z-index:10;}
+.container{width:420px;background:rgba(255,255,255,0.06);backdrop-filter:blur(22px);border-radius:20px;border:1px solid rgba(255,255,255,0.15);overflow:hidden;position:relative;z-index:10;}
+.form-container{padding:40px 30px;}
+.form-container form{display:flex;flex-direction:column;opacity:1;transform:translateY(0);transition:.5s ease;}
+.form-container input{margin-bottom:20px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);color:#fff;font-weight:700;}
+.submit-btn{padding:14px;border:none;border-radius:10px;background:#00c853;color:#000;font-weight:800;cursor:pointer;font-size:16px;transition:0.3s;}
+.submit-btn:hover{transform:scale(1.08);box-shadow:0 0 15px #00ffbf,0 0 30px #00ffbf inset;}
+
+canvas{position:fixed;top:0;left:0;z-index:-2;width:100%;height:100vh;background:black;}
+</style>
+</head>
+
+<body>
+
+<!-- MATRIX -->
+<canvas id="matrixCanvas"></canvas>
+
+<!-- RAIN -->
+<div class="rain"></div>
+
+<!-- LOADING -->
+<div id="loadingScreen">
+<div class="loader"></div>
+<div class="loading-text">LOADING...</div>
+</div>
+
+<!-- LOGIN -->
+<div id="auth-section">
+<div class="container">
+<div class="form-container">
+<form id="loginForm">
+<input type="text" id="username" placeholder="Username" required>
+<input type="password" id="password" placeholder="Password" required>
+<button type="button" class="submit-btn" onclick="checkLogin()">Login</button>
+</form>
+</div>
+</div>
+</div>
+
+<script>
+/* MATRIX */
+const canvas=document.getElementById("matrixCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;canvas.height=innerHeight;
+const letters="アカサタナハマヤラワABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const fontSize=18;
+const columns=canvas.width/fontSize;
+const drops=[];
+for(let x=0;x<columns;x++){drops[x]=1;}
+
+function drawMatrix(){
+ctx.fillStyle="rgba(0,0,0,0.1)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="#0F0";
+ctx.font=fontSize+"px monospace";
+for(let i=0;i<drops.length;i++){
+let text=letters.charAt(Math.floor(Math.random()*letters.length));
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975){drops[i]=0;}
+drops[i]++;
+}
+requestAnimationFrame(drawMatrix);
+}
+drawMatrix();
+
+/* RAIN */
+function createRain(){
+const rain=document.querySelector('.rain');
+for(let i=0;i<120;i++){
+let drop=document.createElement('span');
+drop.classList.add('drop');
+drop.style.left=Math.random()*100+"%";
+drop.style.height=20+Math.random()*40+"px";
+drop.style.width=2+Math.random()*2+"px";
+drop.style.animationDuration=(0.7+Math.random()*1.2)+"s";
+drop.style.animationDelay=Math.random()*3+"s";
+rain.appendChild(drop);
+}
+}
+createRain();
+
+/* LOADING */
+setTimeout(()=>{
+document.getElementById("loadingScreen").style.opacity="0";
+setTimeout(()=>{
+document.getElementById("loadingScreen").style.display="none";
+document.getElementById("auth-section").style.opacity="1";
+},500);
+},2000);
+
+/* LOGIN → OPEN NEW TAB */
+function checkLogin(){
+const u=document.getElementById("username").value.trim();
+const p=document.getElementById("password").value.trim();
+
+if(u==="SUNNY" && p==="AURA"){
+window.open("panel.html","_blank");
+} else {
+alert("❌ Wrong Username or Password");
+}
+}
+
+</script>
+
+</body>
+</html>
