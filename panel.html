@@ -8,9 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-/* SAME CSS (NO CHANGES) */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:#000;color:#fff;min-height:100vh;overflow:hidden;}
+body{background:#0a0a0a;color:#ddd;min-height:100vh;overflow:hidden;}
 
 #matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:-2;background:black;}
 
@@ -21,24 +20,100 @@ body{background:#000;color:#fff;min-height:100vh;overflow:hidden;}
 /* MAIN PANEL */
 #panel-section{position:fixed;top:0;left:0;width:100%;height:100vh;opacity:1;transition:1s ease;text-align:center;padding:40px 20px;z-index:5;}
 
-.header{font-size:38px;color:#00ff8f;font-weight:900;text-shadow:0 0 10px #00ff8f,0 0 20px #00ff8f,0 0 30px #00ff8f;}
+.header{
+    font-size:38px;
+    color:#00cc6a;
+    font-weight:900;
+    text-shadow:0 0 5px #00cc6a, 0 0 10px #00cc6a;
+}
 
-.panel-container{display:flex;justify-content:center;flex-wrap:wrap;}
+.panel-container{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:40px; /* Gap between tools */
+}
 
-.tool-box{width:350px;height:220px;background:rgba(255,255,255,0.05);border-radius:18px;border:2px solid #00ff8f;padding:20px;margin-top:40px;cursor:pointer;transition:0.3s;}
-.tool-box:hover{transform:scale(1.05);box-shadow:0 0 20px #00ffbf,0 0 40px #00ffbf inset;}
+.tool-box{
+    width:350px;
+    height:220px;
+    background:rgba(255,255,255,0.02);
+    border-radius:18px;
+    border:2px solid #00cc6a;
+    padding:20px;
+    margin-top:40px;
+    cursor:pointer;
+    transition:0.3s;
+}
+.tool-box:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 15px #00cc6a,0 0 25px #00cc6a inset;
+}
 
-.tool-title{font-size:26px;color:#00ffae;margin-bottom:20px;font-weight:900;text-shadow:0 0 10px #00ffae;}
+.tool-title{
+    font-size:26px;
+    color:#00cc6a;
+    margin-bottom:20px;
+    font-weight:900;
+    text-shadow:0 0 5px #00cc6a;
+}
 
-.open-btn{padding:14px 25px;background:#00ff9e;color:#000;border-radius:10px;cursor:pointer;font-weight:900;transition:0.3s;}
-.open-btn:hover{transform:scale(1.08);box-shadow:0 0 15px #00ffbf,0 0 30px #00ffbf inset;}
+.open-btn{
+    padding:14px 25px;
+    background:#00cc6a;
+    color:#000;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:900;
+    transition:0.3s;
+}
+.open-btn:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 12px #00cc6a,0 0 25px #00cc6a inset;
+}
 
-#overlayPanel{position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);display:none;justify-content:center;align-items:center;flex-direction:column;z-index:200;}
+#overlayPanel{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    background:rgba(0,0,0,0.8);
+    backdrop-filter:blur(8px);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:200;
+}
 
-#closeOverlayBtn{position:absolute;top:25px;right:35px;font-size:34px;font-weight:900;color:#00ffbf;cursor:pointer;text-shadow:0 0 10px #00ffbf;}
+#closeOverlayBtn{
+    position:absolute;
+    top:25px;
+    right:35px;
+    font-size:34px;
+    font-weight:900;
+    color:#00cc6a;
+    cursor:pointer;
+    text-shadow:0 0 5px #00cc6a;
+}
 
-.overlay-box{width:300px;padding:25px;background:rgba(255,255,255,0.08);border:2px solid #00ffbf;border-radius:15px;margin:15px;text-align:center;cursor:pointer;transition:0.3s;}
-.overlay-box h2{font-size:28px;color:#00ffbf;font-weight:900;}
+.overlay-box{
+    width:300px;
+    padding:25px;
+    background:rgba(255,255,255,0.05);
+    border:2px solid #00cc6a;
+    border-radius:15px;
+    margin:15px;
+    text-align:center;
+    cursor:pointer;
+    transition:0.3s;
+}
+.overlay-box h2{
+    font-size:28px;
+    color:#00cc6a;
+    font-weight:900;
+}
 
 canvas{position:fixed;top:0;left:0;z-index:-2;width:100%;height:100vh;background:black;}
 </style>
@@ -57,8 +132,15 @@ canvas{position:fixed;top:0;left:0;z-index:-2;width:100%;height:100vh;background
 <div class="header">GAMING TOOLS PANEL</div>
 <div class="panel-container">
 
-<div class="tool-box" onclick="openGlitchPanel()">
+<!-- FIRST TOOL -->
+<div class="tool-box" onclick="openGlitchPanel('freefire')">
 <div class="tool-title">FREEFIRE GLITCH FILE</div>
+<button class="open-btn">OPEN</button>
+</div>
+
+<!-- NEW TOOL: CAPCUT PRO -->
+<div class="tool-box" onclick="openGlitchPanel('capcut')">
+<div class="tool-title">CAPCUT PRO</div>
 <button class="open-btn">OPEN</button>
 </div>
 
@@ -69,8 +151,17 @@ canvas{position:fixed;top:0;left:0;z-index:-2;width:100%;height:100vh;background
 <div id="overlayPanel">
 <div id="closeOverlayBtn" onclick="closeOverlay()">✖</div>
 
-<div class="overlay-box" onclick="openAppLink()"><h2>APP LINK</h2></div>
-<div class="overlay-box" onclick="openPasswordLink()"><h2>PASSWORD</h2></div>
+<!-- Freefire Overlay -->
+<div id="overlay-freefire" class="overlay-content" style="display:none;">
+<div class="overlay-box" onclick="openAppLink('freefire')"><h2>APP LINK</h2></div>
+<div class="overlay-box" onclick="openPasswordLink('freefire')"><h2>PASSWORD</h2></div>
+</div>
+
+<!-- Capcut Overlay -->
+<div id="overlay-capcut" class="overlay-content" style="display:none;">
+<div class="overlay-box" onclick="openAppLink('capcut')"><h2>APP LINK</h2></div>
+<div class="overlay-box" onclick="openPasswordLink('capcut')"><h2>PASSWORD</h2></div>
+</div>
 
 </div>
 
@@ -82,7 +173,6 @@ canvas.width=innerWidth;canvas.height=innerHeight;
 const letters="アカサタナハマヤラワABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 const fontSize=18;const columns=canvas.width/fontSize;const drops=[];
 for(let x=0;x<columns;x++){drops[x]=1;}
-
 function drawMatrix(){
 ctx.fillStyle="rgba(0,0,0,0.1)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -115,12 +205,25 @@ rain.appendChild(drop);
 createRain();
 
 /* PANEL FUNCTIONS */
-function openGlitchPanel(){document.getElementById("overlayPanel").style.display="flex";}
+function openGlitchPanel(tool){
+document.querySelectorAll('.overlay-content').forEach(el=>el.style.display='none'); // hide all
+if(tool==='freefire'){document.getElementById('overlay-freefire').style.display='flex';}
+if(tool==='capcut'){document.getElementById('overlay-capcut').style.display='flex';}
+document.getElementById("overlayPanel").style.display="flex";
+}
+
 function closeOverlay(){document.getElementById("overlayPanel").style.display="none";}
 
-function openAppLink(){window.open("https://www.mediafire.com/file/pojdopuwthhig0s/AG+TOOL+V98.apk/file","_blank");}
-function openPasswordLink(){window.open("https://i.ibb.co/6JFWqfD3/Picsart-25-12-11-13-51-04-301.jpg","_blank");}
+/* LINKS */
+function openAppLink(tool){
+if(tool==='freefire'){window.open("https://www.mediafire.com/file/pojdopuwthhig0s/AG+TOOL+V98.apk/file","_blank");}
+if(tool==='capcut'){window.open("https://www.mediafire.com/file/capcut_pro_sample_link.apk/file","_blank");}
+}
 
+function openPasswordLink(tool){
+if(tool==='freefire'){window.open("https://i.ibb.co/6JFWqfD3/Picsart-25-12-11-13-51-04-301.jpg","_blank");}
+if(tool==='capcut'){window.open("https://i.ibb.co/sample/AURA-password.jpg","_blank");}
+}
 </script>
 
 </body>
